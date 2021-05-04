@@ -13,3 +13,4 @@ export const runTime6: RuntimeOptions = { timeoutSeconds: 60, memory: '256MB' };
 export const regionMumbai = 'asia-south1';
 export const FieldValue = admin.firestore.FieldValue;
 export const timeStamp = admin.firestore.Timestamp;
+export const region = 'us-central1';
