@@ -1,15 +1,8 @@
 import * as functions from "firebase-functions";
-import {runTime, region, db, GeoPoint} from "./admin/admin";
+import {runTime, regionMumbai, db, GeoPoint} from "./admin/admin";
 import {v4 as uuidv4} from 'uuid'
 
-export const testFunction = functions.region(region).runWith(runTime).https.onCall(
-	async (data, context) => {
-		let result: any = {}
-		return result;
-    }
-)
-
-export const getScenicPoint = functions.region(region).runWith(runTime).https.onCall(
+export const getScenicPoint = functions.region(regionMumbai).runWith(runTime).https.onCall(
 	async (data, context) => {
 		try{
 			const latitude = data.latitude
@@ -23,13 +16,15 @@ export const getScenicPoint = functions.region(region).runWith(runTime).https.on
 )
 
 
-export const saveScenicPoint = functions.region(region).runWith(runTime).https.onCall(
+export const saveScenicPoint = functions.region(regionMumbai).runWith(runTime).https.onCall(
 	async (data, context) => {
 		try{
-			data['approved'] = false
+			const locationData = {'approved':false, 'country':data.country||'', 'city':data.city||'', 'state':data.state||'', 'name':data.name||'', 'locationImages':data.locationImages||[]}
             const uuid = await uuidv4()
-			data['id'] = uuid
-			await db.collection('scenic_spots').doc().set(data, {merge:true})
+			locationData['id'] = uuid
+			const geoPoint = new GeoPoint(data.latitude, data.longitude)
+			locationData['location'] = geoPoint
+			await db.collection('scenic_spots').doc().set(locationData, {merge:true})
 			return {'status':'success'}
 		}catch(error){
 			console.error(error)
