@@ -1,8 +1,8 @@
 import * as functions from "firebase-functions";
-import {runTime, regionMumbai, db, GeoPoint} from "./admin/admin";
+import {runTime, region, db, GeoPoint} from "./admin/admin";
 import {v4 as uuidv4} from 'uuid'
 
-export const getScenicPoint = functions.region(regionMumbai).runWith(runTime).https.onCall(
+export const getScenicPoint = functions.region(region).runWith(runTime).https.onCall(
 	async (data, context) => {
 		try{
 			const latitude = data.latitude
@@ -16,7 +16,7 @@ export const getScenicPoint = functions.region(regionMumbai).runWith(runTime).ht
 )
 
 
-export const saveScenicPoint = functions.region(regionMumbai).runWith(runTime).https.onCall(
+export const saveScenicPoint = functions.region(region).runWith(runTime).https.onCall(
 	async (data, context) => {
 		try{
 			const locationData = {'approved':false, 'country':data.country||'', 'city':data.city||'', 'state':data.state||'', 'name':data.name||'', 'locationImages':data.locationImages||[]}
